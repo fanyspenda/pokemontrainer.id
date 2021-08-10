@@ -65,7 +65,9 @@ func main() {
 }
 
 func getTrainerController(c echo.Context) error {
-	return c.JSON(http.StatusOK, "yes")
+	var trainers []Trainer
+	DB.Find(&trainers)
+	return c.JSON(http.StatusOK, trainers)
 }
 
 func insertTrainerController(c echo.Context) error {
