@@ -2,6 +2,7 @@ package trainers
 
 import (
 	"context"
+	"fmt"
 	"pokemontrainer/business/trainers"
 	"pokemontrainer/drivers/databases/pokemons"
 	"pokemontrainer/drivers/thirdParties/pokeapi"
@@ -89,11 +90,21 @@ func (repo *MysqlTrainerRepository) Login(ctx context.Context, username, passwor
 	return trainerLogin.toDomain(), nil
 }
 
-// CatchPokemon catch pokemon as Trainer
-// func CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error) {
-// 	result, err := useCase.CatchPokemon(ctx, ID, pokemonID)
-// 	if err != nil {
-// 		return Domain{}, err
-// 	}
-// 	return result, nil
-// }
+// UpdateTrainer update data trainer
+func (repo *MysqlTrainerRepository) UpdateTrainer(ctx context.Context, trainerID int, name, address, username, password string) (trainers.Domain, error) {
+	var trainerCollection = Trainer{}
+	result := repo.Conn.Find(&trainerCollection).Where("id = ?", trainerID).Updates(&Trainer{
+		Name:     name,
+		Address:  address,
+		Username: username,
+		Password: password,
+	})
+
+	fmt.Println(trainerCollection)
+
+	if result.Error != nil {
+		return trainers.Domain{}, result.Error
+	}
+
+	return trainerCollection.toDomain(), nil
+}

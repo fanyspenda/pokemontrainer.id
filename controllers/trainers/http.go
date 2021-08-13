@@ -6,6 +6,8 @@ import (
 	"pokemontrainer/business/trainers"
 	"pokemontrainer/controllers"
 	"pokemontrainer/controllers/trainers/requests"
+	"pokemontrainer/controllers/trainers/responses"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -27,6 +29,7 @@ func NewTrainerController(e *echo.Echo, trainerUC trainers.UseCase) {
 	trainers.GET("/", controller.GetTrainers)
 	trainers.GET("", controller.GetTrainers)
 	trainers.POST("/catch", controller.CatchPokemon)
+	trainers.PUT("/:id", controller.TrainerUpdate)
 }
 
 // Login controller for login useCase
@@ -61,12 +64,12 @@ func (controller *TrainerController) Register(c echo.Context) error {
 
 // GetTrainers controller for Register useCase
 func (controller *TrainerController) GetTrainers(c echo.Context) error {
-	trainer, err := controller.TrainerUseCase.GetTrainers(c.Request().Context())
+	trainers, err := controller.TrainerUseCase.GetTrainers(c.Request().Context())
 
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-	return controllers.NewSuccessResponse(c, trainer)
+	return controllers.NewSuccessResponse(c, responses.FromSliceDomain(trainers))
 }
 
 // CatchPokemon ...
@@ -82,4 +85,26 @@ func (controller *TrainerController) CatchPokemon(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 	return controllers.NewSuccessResponse(c, trainer)
+}
+
+// TrainerUpdate controller to update trainer data including password if not empty
+func (controller *TrainerController) TrainerUpdate(c echo.Context) error {
+	updateTrainerData := requests.TrainerUpdate{}
+	trainerID, _ := strconv.Atoi(c.Param("id"))
+	if err := c.Bind(&updateTrainerData); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	result, err := controller.TrainerUseCase.UpdateTrainer(c.Request().Context(),
+		trainerID,
+		updateTrainerData.Name,
+		updateTrainerData.Address,
+		updateTrainerData.Username,
+		updateTrainerData.Password)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.FromDomain(result))
 }

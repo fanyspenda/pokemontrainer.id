@@ -36,7 +36,7 @@ func (rec *Trainer) toDomain() trainers.Domain {
 		ID:        rec.ID,
 		Name:      rec.Name,
 		Address:   rec.Address,
-		Username:  rec.Address,
+		Username:  rec.Username,
 		Password:  rec.Password,
 		CreatedAt: rec.CreatedAt,
 		UpdatedAt: rec.UpdatedAt,

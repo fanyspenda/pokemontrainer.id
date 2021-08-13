@@ -16,14 +16,24 @@ type TrainerResponse struct {
 	DeletedAt time.Time `json:"deleted_at"`
 }
 
-func fromDomain(domain trainers.Domain) TrainerResponse {
+// FromDomain convert domain data to response data
+func FromDomain(domain trainers.Domain) TrainerResponse {
 	return TrainerResponse{
 		ID:        domain.ID,
 		Name:      domain.Name,
 		Address:   domain.Address,
-		Username:  domain.Address,
+		Username:  domain.Username,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 		DeletedAt: domain.DeletedAt.Time,
 	}
+}
+
+// FromSliceDomain convert slice of Domains to Slice of Trainer Responses
+func FromSliceDomain(domains []trainers.Domain) []TrainerResponse {
+	var convertedDomains = []TrainerResponse{}
+	for _, v := range domains {
+		convertedDomains = append(convertedDomains, FromDomain(v))
+	}
+	return convertedDomains
 }

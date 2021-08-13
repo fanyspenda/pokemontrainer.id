@@ -67,3 +67,13 @@ func (useCase *TrainerUseCase) CatchPokemon(ctx context.Context, ID, pokemonID i
 	}
 	return result, nil
 }
+
+// UpdateTrainer update trainer's profile
+func (useCase *TrainerUseCase) UpdateTrainer(ctx context.Context, trainerID int, name, address, username, password string) (Domain, error) {
+	result, err := useCase.Repository.UpdateTrainer(ctx, trainerID, name, address, username, password)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return result, nil
+}
