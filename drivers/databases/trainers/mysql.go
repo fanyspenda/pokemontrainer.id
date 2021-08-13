@@ -2,7 +2,6 @@ package trainers
 
 import (
 	"context"
-	"fmt"
 	"pokemontrainer/business/trainers"
 	"pokemontrainer/drivers/databases/pokemons"
 	"pokemontrainer/drivers/thirdParties/pokeapi"
@@ -99,8 +98,6 @@ func (repo *MysqlTrainerRepository) UpdateTrainer(ctx context.Context, trainerID
 		Username: username,
 		Password: password,
 	})
-
-	fmt.Println(trainerCollection)
 
 	if result.Error != nil {
 		return trainers.Domain{}, result.Error
