@@ -1,6 +1,7 @@
 package trainers
 
 import (
+	"fmt"
 	"net/http"
 	"pokemontrainer/business/trainers"
 	"pokemontrainer/controllers"
@@ -25,6 +26,7 @@ func NewTrainerController(e *echo.Echo, trainerUC trainers.UseCase) {
 	trainers.POST("/register", controller.Register)
 	trainers.GET("/", controller.GetTrainers)
 	trainers.GET("", controller.GetTrainers)
+	trainers.POST("/catch", controller.CatchPokemon)
 }
 
 // Login controller for login useCase
@@ -61,6 +63,21 @@ func (controller *TrainerController) Register(c echo.Context) error {
 func (controller *TrainerController) GetTrainers(c echo.Context) error {
 	trainer, err := controller.TrainerUseCase.GetTrainers(c.Request().Context())
 
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccessResponse(c, trainer)
+}
+
+// CatchPokemon ...
+func (controller *TrainerController) CatchPokemon(c echo.Context) error {
+	var catchData requests.TrainerCatchPokemon
+	if err := c.Bind(&catchData); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	fmt.Println("catchData", catchData)
+	trainer, err := controller.TrainerUseCase.CatchPokemon(c.Request().Context(), catchData.TrainerID, catchData.PokemonID)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

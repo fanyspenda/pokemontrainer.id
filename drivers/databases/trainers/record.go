@@ -2,6 +2,7 @@ package trainers
 
 import (
 	"pokemontrainer/business/trainers"
+	"pokemontrainer/drivers/databases/pokemons"
 	"time"
 
 	"gorm.io/gorm"
@@ -9,16 +10,25 @@ import (
 
 // Record berisi model dari users
 
-//Trainer ...
+//Trainer database table structure
 type Trainer struct {
-	ID        uint           `gorm:"primarykey" json:"id"`
-	Name      string         `json:"name"`
-	Address   string         `json:"address"`
-	Username  string         `json:"username"`
-	Password  string         `json:"-"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+	ID        uint                `gorm:"primarykey" json:"id"`
+	Name      string              `json:"name"`
+	Address   string              `json:"address"`
+	Username  string              `json:"username"`
+	Password  string              `json:"-"`
+	Pokemons  []*pokemons.Pokemon `gorm:"many2many:trainer_pokemons;"`
+	CreatedAt time.Time           `json:"created_at"`
+	UpdatedAt time.Time           `json:"updated_at"`
+	DeletedAt gorm.DeletedAt      `gorm:"index" json:"deleted_at"`
+}
+
+//TrainerPokemon relation table structure
+type TrainerPokemon struct {
+	TrainerID int `json:"trainer_id"`
+	PokemonID int `json:"pokemon_id"`
+	CreatedAt time.Time
+	DeletedAt gorm.DeletedAt
 }
 
 func (rec *Trainer) toDomain() trainers.Domain {
