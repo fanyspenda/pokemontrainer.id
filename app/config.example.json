@@ -1,0 +1,45 @@
+{
+	"debug": true,
+	"server": {
+		"address": ":3000"
+	},
+	"context": {
+		"timeout": 2
+	},
+	"database": {
+		"host": "localhost",
+		"port": "3306",
+		"user": "username",
+		"pass": "123456",
+		"name": "databasename",
+		"params": {
+			"charset": "utf8mb4"
+		},
+		"loc": "local",
+		"parseTime": true
+	},
+	"jwt": {
+		"secret": "secretkey",
+		"expired": 1
+	},
+
+	"__comment": {
+		"server": {
+			"address": "your server address"
+		},
+		"context": {
+			"timeout": "timeout for maximum pending request. time is in second"
+		},
+		"database": {
+			"host": "your host url",
+			"port": "your databases port",
+			"user": "your database username",
+			"pass": "password for your database",
+			"name": "your database name"
+		},
+		"jwt": {
+			"secret": "secret for JWT",
+			"expired": "your JWT expired time."
+		}
+	}
+}
