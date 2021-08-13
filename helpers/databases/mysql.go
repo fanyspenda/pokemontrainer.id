@@ -2,6 +2,7 @@ package databases
 
 import (
 	"fmt"
+	"pokemontrainer/drivers/databases/gyms"
 	"pokemontrainer/drivers/databases/pokemons"
 	"pokemontrainer/drivers/databases/trainers"
 
@@ -43,5 +44,10 @@ func (db *Config) InitDB() *gorm.DB {
 
 //Migrate will automigrate database from struct
 func Migrate(db *gorm.DB) {
-	db.AutoMigrate(&trainers.Trainer{}, &pokemons.Pokemon{}, &trainers.TrainerPokemon{})
+	db.AutoMigrate(
+		&trainers.Trainer{},
+		&pokemons.Pokemon{},
+		&trainers.TrainerPokemon{},
+		&gyms.Gym{},
+	)
 }
