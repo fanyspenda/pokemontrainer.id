@@ -24,6 +24,14 @@ type TrainerCatchPokemon struct {
 	PokemonID int `json:"pokemon_id"`
 }
 
+// TrainerUpdate data structure for updating trainer
+type TrainerUpdate struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Name     string `json:"name"`
+	Address  string `json:"address"`
+}
+
 // ToDomain convert request data to Domain
 func (req *TrainerLogin) ToDomain() *trainers.Domain {
 	return &trainers.Domain{

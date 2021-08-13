@@ -46,5 +46,8 @@ func main() {
 	trainerUseCase := _trainerUseCase.NewTrainerUseCase(trainerRepo, timeoutContext)
 	_trainerController.NewTrainerController(e, trainerUseCase)
 
-	e.Start(viper.GetString("server.address"))
+	err := e.Start(viper.GetString("server.address"))
+	if err != nil {
+		panic(err)
+	}
 }
