@@ -27,7 +27,7 @@ type UseCase interface {
 	Register(ctx context.Context, name, address, username, password string) (Domain, error)
 	Login(ctx context.Context, username, password string) (Domain, error)
 	GetTrainers(ctx context.Context) ([]Domain, error)
-	// CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error)
+	CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error)
 	// AddGym(ctx context.Context, ID, gymID int) (Domain, error)
 }
 
@@ -37,6 +37,6 @@ type Repository interface {
 	Register(ctx context.Context, name, address, username, password string) (Domain, error)
 	Login(ctx context.Context, username, password string) (Domain, error)
 	GetTrainers(ctx context.Context) ([]Domain, error)
-	// CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error)
+	CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error)
 	// AddGym(ctx context.Context, ID, gymID int) (Domain, error)
 }

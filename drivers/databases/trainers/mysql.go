@@ -3,6 +3,8 @@ package trainers
 import (
 	"context"
 	"pokemontrainer/business/trainers"
+	"pokemontrainer/drivers/databases/pokemons"
+	"pokemontrainer/drivers/thirdParties/pokeapi"
 
 	"gorm.io/gorm"
 )
@@ -45,6 +47,27 @@ func (repo *MysqlTrainerRepository) GetTrainers(ctx context.Context) ([]trainers
 	}
 
 	return ToSliceDomain(trainersCollection), nil
+}
+
+// CatchPokemon Add pokemon to relation table
+func (repo *MysqlTrainerRepository) CatchPokemon(ctx context.Context, ID, pokemonID int) (trainers.Domain, error) {
+	pokeapiStruct := pokeapi.Pokeapi{}
+
+	// check if pokemon id exist
+	res, err := pokeapiStruct.GetPokemonByID(ctx, pokemonID)
+	if err != nil {
+		return trainers.Domain{}, err
+	}
+
+	pokemonData := &pokemons.Pokemon{ID: pokemonID, Name: res.Name}
+	trainerPokemon := &TrainerPokemon{
+		PokemonID: pokemonID,
+		TrainerID: ID,
+	}
+
+	repo.Conn.Create(&pokemonData)
+	repo.Conn.Create(&trainerPokemon)
+	return trainers.Domain{}, nil
 }
 
 // AddGym register trainer to gym

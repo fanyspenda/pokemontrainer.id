@@ -60,10 +60,10 @@ func (useCase *TrainerUseCase) Login(ctx context.Context, username, password str
 }
 
 // CatchPokemon catch pokemon as Trainer
-// func (useCase *TrainerUseCase) CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error) {
-// 	result, err := useCase.Repository.CatchPokemon(ctx, ID, pokemonID)
-// 	if err != nil {
-// 		return Domain{}, err
-// 	}
-// 	return result, nil
-// }
+func (useCase *TrainerUseCase) CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error) {
+	result, err := useCase.Repository.CatchPokemon(ctx, ID, pokemonID)
+	if err != nil {
+		return Domain{}, err
+	}
+	return result, nil
+}

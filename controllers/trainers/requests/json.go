@@ -18,6 +18,12 @@ type TrainerRegister struct {
 	Address  string `json:"address"`
 }
 
+// TrainerCatchPokemon ...
+type TrainerCatchPokemon struct {
+	TrainerID int `json:"trainer_id"`
+	PokemonID int `json:"pokemon_id"`
+}
+
 // ToDomain convert request data to Domain
 func (req *TrainerLogin) ToDomain() *trainers.Domain {
 	return &trainers.Domain{
