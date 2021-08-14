@@ -48,6 +48,7 @@ func Migrate(db *gorm.DB) {
 		&trainers.Trainer{},
 		&pokemons.Pokemon{},
 		&trainers.TrainerPokemon{},
+		&trainers.TrainerGym{},
 		&gyms.Gym{},
 	)
 }

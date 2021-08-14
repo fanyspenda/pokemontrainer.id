@@ -42,13 +42,13 @@ func (useCase *TrainerUseCase) GetTrainers(ctx context.Context) ([]Domain, error
 }
 
 // AddGym register trainer to gym
-// func (useCase *TrainerUseCase) AddGym(ctx context.Context, ID, gymID int) (Domain, error) {
-// 	result, err := useCase.Repository.AddGym(ctx, ID, gymID)
-// 	if err != nil {
-// 		return Domain{}, err
-// 	}
-// 	return result, nil
-// }
+func (useCase *TrainerUseCase) AddGym(ctx context.Context, trainerID, gymID int) (Domain, error) {
+	result, err := useCase.Repository.AddGym(ctx, trainerID, gymID)
+	if err != nil {
+		return Domain{}, err
+	}
+	return result, nil
+}
 
 // Login as Trainer
 func (useCase *TrainerUseCase) Login(ctx context.Context, username, password string) (Domain, error) {

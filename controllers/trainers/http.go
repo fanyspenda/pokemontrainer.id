@@ -30,6 +30,7 @@ func NewTrainerController(e *echo.Echo, trainerUC trainers.UseCase) {
 	trainers.GET("", controller.GetTrainers)
 	trainers.POST("/catch", controller.CatchPokemon)
 	trainers.PUT("/:id", controller.TrainerUpdate)
+	trainers.POST("/gyms/register", controller.TrainerRegisterGym)
 }
 
 // Login controller for login useCase
@@ -107,4 +108,18 @@ func (controller *TrainerController) TrainerUpdate(c echo.Context) error {
 	}
 
 	return controllers.NewSuccessResponse(c, responses.FromDomain(result))
+}
+
+// TrainerRegisterGym add trainer to gym which is add trainerId and GymId to the join table
+func (controller *TrainerController) TrainerRegisterGym(c echo.Context) error {
+	var gymRegisterData requests.TrainerRegisterGym
+	if err := c.Bind(&gymRegisterData); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	domainRes, err := controller.TrainerUseCase.AddGym(c.Request().Context(), gymRegisterData.TrainerID, gymRegisterData.GymID)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccessResponse(c, responses.FromDomain(domainRes))
 }

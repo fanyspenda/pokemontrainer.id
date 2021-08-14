@@ -2,6 +2,7 @@ package trainers
 
 import (
 	"pokemontrainer/business/trainers"
+	"pokemontrainer/drivers/databases/gyms"
 	"pokemontrainer/drivers/databases/pokemons"
 	"time"
 
@@ -18,6 +19,7 @@ type Trainer struct {
 	Username  string              `json:"username"`
 	Password  string              `json:"-"`
 	Pokemons  []*pokemons.Pokemon `gorm:"many2many:trainer_pokemons;"`
+	Gyms      []*gyms.Gym         `gorm:"many2many:trainer_gyms;"`
 	CreatedAt time.Time           `json:"created_at"`
 	UpdatedAt time.Time           `json:"updated_at"`
 	DeletedAt gorm.DeletedAt      `gorm:"index" json:"deleted_at"`
@@ -27,6 +29,14 @@ type Trainer struct {
 type TrainerPokemon struct {
 	TrainerID int `json:"trainer_id"`
 	PokemonID int `json:"pokemon_id"`
+	CreatedAt time.Time
+	DeletedAt gorm.DeletedAt
+}
+
+//TrainerGym relation table structure
+type TrainerGym struct {
+	TrainerID int `json:"trainer_id"`
+	GymID     int `json:"gym_id"`
 	CreatedAt time.Time
 	DeletedAt gorm.DeletedAt
 }

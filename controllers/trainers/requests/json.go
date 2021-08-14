@@ -32,6 +32,12 @@ type TrainerUpdate struct {
 	Address  string `json:"address"`
 }
 
+// TrainerRegisterGym requesr data structure to add to relation table
+type TrainerRegisterGym struct {
+	TrainerID int `json:"trainer_id"`
+	GymID     int `json:"gym_id"`
+}
+
 // ToDomain convert request data to Domain
 func (req *TrainerLogin) ToDomain() *trainers.Domain {
 	return &trainers.Domain{
