@@ -25,6 +25,7 @@ func NewGymController(e *echo.Echo, gymUC gyms.UseCases) {
 	gyms := e.Group("gyms")
 	gyms.POST("", controller.AddGym)
 	gyms.PUT("/:id", controller.UpdateGym)
+	gyms.GET("", controller.GetGyms)
 }
 
 // AddGym controller for AddGym useCase
@@ -61,4 +62,14 @@ func (controller *GymController) UpdateGym(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 	return controllers.NewSuccessResponse(c, responses.FromDomain(res))
+}
+
+// GetGyms controller when GET gyms
+func (controller *GymController) GetGyms(c echo.Context) error {
+	res, err := controller.GymUseCases.GetGyms(c.Request().Context())
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccessResponse(c, responses.FromSliceDomain(res))
 }

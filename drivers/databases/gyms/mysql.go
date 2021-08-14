@@ -34,8 +34,8 @@ func (repo *MysqlGymRepository) AddGym(ctx context.Context, name, address string
 
 // UpdateGym Do some DB logic and then return to as Domain data
 func (repo *MysqlGymRepository) UpdateGym(ctx context.Context, gymID int, name, address string) (gyms.Domain, error) {
-	responseGymData := &Gym{}
-	result := repo.Conn.Find(responseGymData).Where("id = ?", gymID).Updates(&Gym{
+	resultGymData := &Gym{}
+	result := repo.Conn.Find(resultGymData).Where("id = ?", gymID).Updates(&Gym{
 		Name:    name,
 		Address: address,
 	})
@@ -43,5 +43,15 @@ func (repo *MysqlGymRepository) UpdateGym(ctx context.Context, gymID int, name, 
 	if result.Error != nil {
 		return gyms.Domain{}, nil
 	}
-	return ToDomain(responseGymData), nil
+	return ToDomain(resultGymData), nil
+}
+
+// GetGyms get Gyms Data
+func (repo *MysqlGymRepository) GetGyms(ctx context.Context) ([]gyms.Domain, error) {
+	resultGymData := []Gym{}
+	result := repo.Conn.Find(&resultGymData)
+	if result.Error != nil {
+		return []gyms.Domain{}, result.Error
+	}
+	return ToSliceDomain(resultGymData), nil
 }
