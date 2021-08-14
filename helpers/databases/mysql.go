@@ -55,6 +55,11 @@ func Migrate(db *gorm.DB) {
 
 		panic(err)
 	}
+
+	err = db.SetupJoinTable(&trainers.Trainer{}, "Pokeballs", &trainers.TrainerPokeballs{})
+	if err != nil {
+		panic(err)
+	}
 	db.AutoMigrate(
 		&trainers.Trainer{},
 		&pokemons.Pokemon{},
