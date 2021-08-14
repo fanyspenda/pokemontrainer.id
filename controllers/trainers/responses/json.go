@@ -1,7 +1,9 @@
 package responses
 
 import (
+	"pokemontrainer/business/pokeballs"
 	"pokemontrainer/business/trainers"
+
 	"time"
 
 	"gorm.io/gorm"
@@ -18,6 +20,14 @@ type TrainerResponse struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
 
+// RegisterResponse after user register
+type RegisterResponse struct {
+	TrainerID uint             `json:"trainer_id"`
+	Name      string           `json:"name"`
+	Address   string           `json:"address"`
+	Pokeballs pokeballs.Domain `json:"pokeballs"`
+}
+
 // FromDomain convert domain data to response data
 func FromDomain(domain trainers.Domain) TrainerResponse {
 	return TrainerResponse{
@@ -28,6 +38,16 @@ func FromDomain(domain trainers.Domain) TrainerResponse {
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 		DeletedAt: domain.DeletedAt,
+	}
+}
+
+// ToRegisterResponse ...
+func ToRegisterResponse(trainer trainers.Domain, pokeball pokeballs.Domain) RegisterResponse {
+	return RegisterResponse{
+		TrainerID: trainer.ID,
+		Name:      trainer.Name,
+		Address:   trainer.Address,
+		Pokeballs: pokeball,
 	}
 }
 

@@ -2,7 +2,9 @@ package trainers
 
 import (
 	"context"
+	pokeballBusiness "pokemontrainer/business/pokeballs"
 	"pokemontrainer/business/trainers"
+	pokeballDatabase "pokemontrainer/drivers/databases/pokeballs"
 	"pokemontrainer/drivers/databases/pokemons"
 	"pokemontrainer/drivers/thirdParties/pokeapi"
 
@@ -34,6 +36,27 @@ func (repo *MysqlTrainerRepository) Register(ctx context.Context, name, address,
 		return trainers.Domain{}, result.Error
 	}
 	return trainerRegister.toDomain(), nil
+}
+
+// GetFirstBall add 1 ball to join table trainer-pokeball
+func (repo *MysqlTrainerRepository) GetFirstBall(ctx context.Context, trainerID uint) (pokeballBusiness.Domain, error) {
+
+	var lowestPokeball = pokeballDatabase.Pokeball{}
+	result := repo.Conn.Order("success_rate asc").First(&lowestPokeball)
+	if result.Error != nil {
+		return pokeballBusiness.Domain{}, result.Error
+	}
+	var joinTableData = TrainerPokeballs{
+		TrainerID:  trainerID,
+		PokeballID: lowestPokeball.ID,
+		Quantity:   1,
+	}
+
+	result = repo.Conn.Create(&joinTableData)
+	if result.Error != nil {
+		return pokeballBusiness.Domain{}, result.Error
+	}
+	return pokeballDatabase.ToDomain(&lowestPokeball), nil
 }
 
 // GetTrainers return all trainer data

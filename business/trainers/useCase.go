@@ -2,6 +2,7 @@ package trainers
 
 import (
 	"context"
+	"pokemontrainer/business/pokeballs"
 	"time"
 )
 
@@ -27,6 +28,15 @@ func (useCase *TrainerUseCase) Register(ctx context.Context, name, address, user
 
 	if err != nil {
 		return Domain{}, err
+	}
+	return result, nil
+}
+
+// GetFirstBall add trainer data to join table trainer-pokeball
+func (useCase *TrainerUseCase) GetFirstBall(ctx context.Context, trainerID uint) (pokeballs.Domain, error) {
+	result, err := useCase.Repository.GetFirstBall(ctx, trainerID)
+	if err != nil {
+		return pokeballs.Domain{}, err
 	}
 	return result, nil
 }

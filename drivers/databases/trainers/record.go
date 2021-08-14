@@ -48,8 +48,8 @@ type TrainerGym struct {
 // TrainerPokeballs relation table structure
 type TrainerPokeballs struct {
 	ID         uint `gorm:"primaryKey" json:"id"`
-	TrainerID  int  `gorm:"primaryKey;autoIncrement:false" json:"trainer_id"`
-	PokeballID int  `gorm:"primaryKey;autoIncrement:false" json:"pokeball_id"`
+	TrainerID  uint `gorm:"primaryKey;autoIncrement:false" json:"trainer_id"`
+	PokeballID uint `gorm:"primaryKey;autoIncrement:false" json:"pokeball_id"`
 	Quantity   int  `json:"quantity"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
