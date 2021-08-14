@@ -2,6 +2,7 @@ package trainers
 
 import (
 	"context"
+	"pokemontrainer/business/pokeballs"
 	"time"
 
 	"gorm.io/gorm"
@@ -25,6 +26,7 @@ type Domain struct {
 // UseCase about what Trainer can do
 type UseCase interface {
 	Register(ctx context.Context, name, address, username, password string) (Domain, error)
+	GetFirstBall(ctx context.Context, trainerID uint) (pokeballs.Domain, error)
 	Login(ctx context.Context, username, password string) (Domain, error)
 	GetTrainers(ctx context.Context) ([]Domain, error)
 	CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error)
@@ -36,6 +38,7 @@ type UseCase interface {
 // Contoh: UseCase BuatNasiGoreng, reponya bisa siapin bumbu, siapin sayur, siapin nasi, campur, goreng, dll.
 type Repository interface {
 	Register(ctx context.Context, name, address, username, password string) (Domain, error)
+	GetFirstBall(ctx context.Context, trainerID uint) (pokeballs.Domain, error)
 	Login(ctx context.Context, username, password string) (Domain, error)
 	GetTrainers(ctx context.Context) ([]Domain, error)
 	CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error)

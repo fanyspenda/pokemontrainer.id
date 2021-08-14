@@ -3,6 +3,7 @@ package trainers
 import (
 	"fmt"
 	"net/http"
+	"pokemontrainer/business/pokeballs"
 	"pokemontrainer/business/trainers"
 	"pokemontrainer/controllers"
 	"pokemontrainer/controllers/trainers/requests"
@@ -55,12 +56,25 @@ func (controller *TrainerController) Register(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
-	trainer, err := controller.TrainerUseCase.Register(c.Request().Context(), registerData.Name, registerData.Address, registerData.Username, registerData.Password)
+	trainer, err := controller.TrainerUseCase.Register(c.Request().Context(),
+		registerData.Name,
+		registerData.Address,
+		registerData.Username,
+		registerData.Password,
+	)
 
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-	return controllers.NewSuccessResponse(c, responses.FromDomain(trainer))
+
+	var pokeball pokeballs.Domain
+	pokeball, err = controller.TrainerUseCase.GetFirstBall(c.Request().Context(), trainer.ID)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccessResponse(c, responses.ToRegisterResponse(trainer, pokeball))
 }
 
 // GetTrainers controller for GetTrainers useCase
