@@ -6,6 +6,7 @@ import (
 	"pokemontrainer/business/pokeballs"
 	"pokemontrainer/business/trainers"
 	"pokemontrainer/controllers"
+	pokeballResponses "pokemontrainer/controllers/pokeballs/responses"
 	"pokemontrainer/controllers/trainers/requests"
 	"pokemontrainer/controllers/trainers/responses"
 	"strconv"
@@ -74,7 +75,7 @@ func (controller *TrainerController) Register(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccessResponse(c, responses.ToRegisterResponse(trainer, pokeball))
+	return controllers.NewSuccessResponse(c, responses.ToRegisterResponse(trainer, pokeballResponses.FromDomain(pokeball)))
 }
 
 // GetTrainers controller for GetTrainers useCase
