@@ -44,11 +44,19 @@ func (db *Config) InitDB() *gorm.DB {
 
 //Migrate will automigrate database from struct
 func Migrate(db *gorm.DB) {
+	err := db.SetupJoinTable(&trainers.Trainer{}, "Pokemons", &trainers.TrainerPokemon{})
+	if err != nil {
+
+		panic(err)
+	}
+	err = db.SetupJoinTable(&trainers.Trainer{}, "Gyms", &trainers.TrainerGym{})
+	if err != nil {
+
+		panic(err)
+	}
 	db.AutoMigrate(
 		&trainers.Trainer{},
 		&pokemons.Pokemon{},
-		&trainers.TrainerPokemon{},
-		&trainers.TrainerGym{},
 		&gyms.Gym{},
 	)
 }
