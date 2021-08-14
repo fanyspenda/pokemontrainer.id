@@ -1,8 +1,8 @@
 package responses
 
 import (
-	"pokemontrainer/business/pokeballs"
 	"pokemontrainer/business/trainers"
+	pokeballResponses "pokemontrainer/controllers/pokeballs/responses"
 
 	"time"
 
@@ -22,10 +22,10 @@ type TrainerResponse struct {
 
 // RegisterResponse after user register
 type RegisterResponse struct {
-	TrainerID uint             `json:"trainer_id"`
-	Name      string           `json:"name"`
-	Address   string           `json:"address"`
-	Pokeballs pokeballs.Domain `json:"pokeballs"`
+	TrainerID uint                       `json:"trainer_id"`
+	Name      string                     `json:"name"`
+	Address   string                     `json:"address"`
+	Pokeball  pokeballResponses.Response `json:"pokeball"`
 }
 
 // FromDomain convert domain data to response data
@@ -42,12 +42,12 @@ func FromDomain(domain trainers.Domain) TrainerResponse {
 }
 
 // ToRegisterResponse ...
-func ToRegisterResponse(trainer trainers.Domain, pokeball pokeballs.Domain) RegisterResponse {
+func ToRegisterResponse(trainer trainers.Domain, pokeball pokeballResponses.Response) RegisterResponse {
 	return RegisterResponse{
 		TrainerID: trainer.ID,
 		Name:      trainer.Name,
 		Address:   trainer.Address,
-		Pokeballs: pokeball,
+		Pokeball:  pokeball,
 	}
 }
 
