@@ -8,13 +8,13 @@ import (
 	"pokemontrainer/drivers/databases/pokemons"
 )
 
+// Pokeapi struct for getting Do method
 type Pokeapi struct {
 	httpClient http.Client
 }
 
 // GetPokemonByID ...
 func (pApi *Pokeapi) GetPokemonByID(ctx context.Context, pokemonID int) (pokemons.Pokemon, error) {
-	fmt.Println("pokemonID", pokemonID)
 	req, _ := http.NewRequest("GET", "https://pokeapi.co/api/v2/"+"pokemon/"+fmt.Sprint(pokemonID), nil)
 
 	resp, err := pApi.httpClient.Do(req)

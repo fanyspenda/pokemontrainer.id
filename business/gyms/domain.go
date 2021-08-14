@@ -21,10 +21,12 @@ type Domain struct {
 type UseCases interface {
 	AddGym(ctx context.Context, name, address string) (Domain, error)
 	UpdateGym(ctx context.Context, gymID int, name, address string) (Domain, error)
+	GetGyms(ctx context.Context) ([]Domain, error)
 }
 
 // Repositories for Gym
 type Repositories interface {
 	AddGym(ctx context.Context, name, address string) (Domain, error)
 	UpdateGym(ctx context.Context, gymID int, name, address string) (Domain, error)
+	GetGyms(ctx context.Context) ([]Domain, error)
 }

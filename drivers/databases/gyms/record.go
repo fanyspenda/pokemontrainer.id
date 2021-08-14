@@ -40,3 +40,12 @@ func FromDomain(gymDomain *gyms.Domain) Gym {
 		DeletedAt: gymDomain.DeletedAt,
 	}
 }
+
+// ToSliceDomain convert slice Gym to Slice Domain Gym
+func ToSliceDomain(sliceGym []Gym) []gyms.Domain {
+	var convertedGyms []gyms.Domain
+	for _, v := range sliceGym {
+		convertedGyms = append(convertedGyms, ToDomain(&v))
+	}
+	return convertedGyms
+}

@@ -39,3 +39,13 @@ func (useCase *GymUseCase) UpdateGym(ctx context.Context, gymID int, name, addre
 
 	return gym, nil
 }
+
+// GetGyms show gyms list. usecase to run repository
+func (useCase *GymUseCase) GetGyms(ctx context.Context) ([]Domain, error) {
+	gyms, err := useCase.Repositories.GetGyms(ctx)
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return gyms, nil
+}

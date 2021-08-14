@@ -26,3 +26,12 @@ func FromDomain(gymDomain gyms.Domain) GymResponse {
 		DeletedAt: gymDomain.DeletedAt.Time,
 	}
 }
+
+// FromSliceDomain convert Slice of Domain to slice of response
+func FromSliceDomain(gymsDomain []gyms.Domain) []GymResponse {
+	var convertedGym = []GymResponse{}
+	for _, v := range gymsDomain {
+		convertedGym = append(convertedGym, FromDomain(v))
+	}
+	return convertedGym
+}
