@@ -31,3 +31,17 @@ func (repo *MysqlGymRepository) AddGym(ctx context.Context, name, address string
 	}
 	return ToDomain(addGymData), nil
 }
+
+// UpdateGym Do some DB logic and then return to as Domain data
+func (repo *MysqlGymRepository) UpdateGym(ctx context.Context, gymID int, name, address string) (gyms.Domain, error) {
+	responseGymData := &Gym{}
+	result := repo.Conn.Find(responseGymData).Where("id = ?", gymID).Updates(&Gym{
+		Name:    name,
+		Address: address,
+	})
+
+	if result.Error != nil {
+		return gyms.Domain{}, nil
+	}
+	return ToDomain(responseGymData), nil
+}

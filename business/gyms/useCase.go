@@ -28,3 +28,14 @@ func (useCase *GymUseCase) AddGym(ctx context.Context, name, address string) (Do
 	}
 	return gym, nil
 }
+
+// UpdateGym update Gym UseCase to run Repository
+func (useCase *GymUseCase) UpdateGym(ctx context.Context, gymID int, name, address string) (Domain, error) {
+	gym, err := useCase.Repositories.UpdateGym(ctx, gymID, name, address)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
+	return gym, nil
+}
