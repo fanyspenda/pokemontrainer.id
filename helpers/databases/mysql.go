@@ -3,6 +3,7 @@ package databases
 import (
 	"fmt"
 	"pokemontrainer/drivers/databases/gyms"
+	"pokemontrainer/drivers/databases/pokeballs"
 	"pokemontrainer/drivers/databases/pokemons"
 	"pokemontrainer/drivers/databases/trainers"
 
@@ -58,5 +59,6 @@ func Migrate(db *gorm.DB) {
 		&trainers.Trainer{},
 		&pokemons.Pokemon{},
 		&gyms.Gym{},
+		&pokeballs.Pokeball{},
 	)
 }
