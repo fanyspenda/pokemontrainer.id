@@ -53,7 +53,7 @@ func (repo *MysqlTrainerRepository) GetTrainers(ctx context.Context) ([]trainers
 func (repo *MysqlTrainerRepository) CatchPokemon(ctx context.Context, ID, pokemonID int) (trainers.Domain, error) {
 	pokeapiStruct := pokeapi.Pokeapi{}
 
-	// check if pokemon id exist
+	// check if pokemon is exist
 	res, err := pokeapiStruct.GetPokemonByID(ctx, pokemonID)
 	if err != nil {
 		return trainers.Domain{}, err
@@ -71,13 +71,18 @@ func (repo *MysqlTrainerRepository) CatchPokemon(ctx context.Context, ID, pokemo
 }
 
 // AddGym register trainer to gym
-// func AddGym(ctx context.Context, ID, gymID int) (Domain, error) {
-// 	result, err := useCase.Repository.AddGym(ctx, ID, gymID)
-// 	if err != nil {
-// 		return Domain{}, err
-// 	}
-// 	return result, nil
-// }
+func (repo *MysqlTrainerRepository) AddGym(ctx context.Context, ID, gymID int) (trainers.Domain, error) {
+	trainerGym := TrainerGym{
+		GymID:     gymID,
+		TrainerID: ID,
+	}
+	result := repo.Conn.Create(&trainerGym)
+	if result.Error != nil {
+		return trainers.Domain{}, result.Error
+	}
+	res := Trainer{ID: uint(ID)}
+	return res.toDomain(), nil
+}
 
 // Login as Trainer
 func (repo *MysqlTrainerRepository) Login(ctx context.Context, username, password string) (trainers.Domain, error) {
