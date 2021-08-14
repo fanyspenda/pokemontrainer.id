@@ -13,30 +13,32 @@ import (
 
 //Trainer database table structure
 type Trainer struct {
-	ID        uint                `gorm:"primarykey" json:"id"`
-	Name      string              `json:"name"`
-	Address   string              `json:"address"`
-	Username  string              `json:"username"`
-	Password  string              `json:"-"`
-	Pokemons  []*pokemons.Pokemon `gorm:"many2many:trainer_pokemons;"`
-	Gyms      []*gyms.Gym         `gorm:"many2many:trainer_gyms;"`
-	CreatedAt time.Time           `json:"created_at"`
-	UpdatedAt time.Time           `json:"updated_at"`
-	DeletedAt gorm.DeletedAt      `gorm:"index" json:"deleted_at"`
+	ID        uint               `gorm:"primarykey" json:"id"`
+	Name      string             `json:"name"`
+	Address   string             `json:"address"`
+	Username  string             `json:"username"`
+	Password  string             `json:"-"`
+	Pokemons  []pokemons.Pokemon `gorm:"many2many:trainer_pokemons;"`
+	Gyms      []gyms.Gym         `gorm:"many2many:trainer_gyms;"`
+	CreatedAt time.Time          `json:"created_at"`
+	UpdatedAt time.Time          `json:"updated_at"`
+	DeletedAt gorm.DeletedAt     `gorm:"index" json:"deleted_at"`
 }
 
 //TrainerPokemon relation table structure
 type TrainerPokemon struct {
-	TrainerID int `json:"trainer_id"`
-	PokemonID int `json:"pokemon_id"`
+	ID        uint `gorm:"primaryKey" json:"id"`
+	TrainerID int  `gorm:"primaryKey;autoIncrement:false" json:"trainer_id"`
+	PokemonID int  `gorm:"primaryKey;autoIncrement:false" json:"pokemon_id"`
 	CreatedAt time.Time
 	DeletedAt gorm.DeletedAt
 }
 
 //TrainerGym relation table structure
 type TrainerGym struct {
-	TrainerID int `json:"trainer_id"`
-	GymID     int `json:"gym_id"`
+	ID        uint `gorm:"primaryKey" json:"id"`
+	TrainerID int  `gorm:"primaryKey;autoIncrement:false" json:"trainer_id"`
+	GymID     int  `gorm:"primaryKey;autoIncrement:false" json:"gym_id"`
 	CreatedAt time.Time
 	DeletedAt gorm.DeletedAt
 }
