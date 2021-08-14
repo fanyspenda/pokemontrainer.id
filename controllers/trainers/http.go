@@ -60,10 +60,10 @@ func (controller *TrainerController) Register(c echo.Context) error {
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-	return controllers.NewSuccessResponse(c, trainer)
+	return controllers.NewSuccessResponse(c, responses.FromDomain(trainer))
 }
 
-// GetTrainers controller for Register useCase
+// GetTrainers controller for GetTrainers useCase
 func (controller *TrainerController) GetTrainers(c echo.Context) error {
 	trainers, err := controller.TrainerUseCase.GetTrainers(c.Request().Context())
 

@@ -3,6 +3,7 @@ package trainers
 import (
 	"pokemontrainer/business/trainers"
 	"pokemontrainer/drivers/databases/gyms"
+	"pokemontrainer/drivers/databases/pokeballs"
 	"pokemontrainer/drivers/databases/pokemons"
 	"time"
 
@@ -13,16 +14,17 @@ import (
 
 //Trainer database table structure
 type Trainer struct {
-	ID        uint               `gorm:"primarykey" json:"id"`
-	Name      string             `json:"name"`
-	Address   string             `json:"address"`
-	Username  string             `json:"username"`
-	Password  string             `json:"-"`
-	Pokemons  []pokemons.Pokemon `gorm:"many2many:trainer_pokemons;"`
-	Gyms      []gyms.Gym         `gorm:"many2many:trainer_gyms;"`
-	CreatedAt time.Time          `json:"created_at"`
-	UpdatedAt time.Time          `json:"updated_at"`
-	DeletedAt gorm.DeletedAt     `gorm:"index" json:"deleted_at"`
+	ID        uint                 `gorm:"primarykey" json:"id"`
+	Name      string               `json:"name"`
+	Address   string               `json:"address"`
+	Username  string               `json:"username"`
+	Password  string               `json:"-"`
+	Pokemons  []pokemons.Pokemon   `gorm:"many2many:trainer_pokemons;"`
+	Gyms      []gyms.Gym           `gorm:"many2many:trainer_gyms;"`
+	Pokeballs []pokeballs.Pokeball `gorm:"many2many:trainer_pokeballs;"`
+	CreatedAt time.Time            `json:"created_at"`
+	UpdatedAt time.Time            `json:"updated_at"`
+	DeletedAt gorm.DeletedAt       `gorm:"index" json:"deleted_at"`
 }
 
 //TrainerPokemon relation table structure
@@ -41,6 +43,17 @@ type TrainerGym struct {
 	GymID     int  `gorm:"primaryKey;autoIncrement:false" json:"gym_id"`
 	CreatedAt time.Time
 	DeletedAt gorm.DeletedAt
+}
+
+// TrainerPokeballs relation table structure
+type TrainerPokeballs struct {
+	ID         uint `gorm:"primaryKey" json:"id"`
+	TrainerID  int  `gorm:"primaryKey;autoIncrement:false" json:"trainer_id"`
+	PokeballID int  `gorm:"primaryKey;autoIncrement:false" json:"pokeball_id"`
+	Quantity   int  `json:"quantity"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	DeletedAt  gorm.DeletedAt
 }
 
 func (rec *Trainer) toDomain() trainers.Domain {

@@ -12,6 +12,10 @@ import (
 	_gymController "pokemontrainer/controllers/gyms"
 	_gymRepo "pokemontrainer/drivers/databases/gyms"
 
+	_pokeballUseCase "pokemontrainer/business/pokeballs"
+	_pokeballController "pokemontrainer/controllers/pokeballs"
+	_pokeballRepo "pokemontrainer/drivers/databases/pokeballs"
+
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 )
@@ -53,6 +57,10 @@ func main() {
 	gymRepo := _gymRepo.NewMysqlGymRepository(db)
 	gymUseCase := _gymUseCase.NewGymUseCases(gymRepo, timeoutContext)
 	_gymController.NewGymController(e, gymUseCase)
+
+	pokeballRepo := _pokeballRepo.NewMysqlPokeballRepository(db)
+	pokeballUseCase := _pokeballUseCase.NewPokeballUseCase(pokeballRepo, timeoutContext)
+	_pokeballController.NewControllerPokeball(e, pokeballUseCase)
 
 	err := e.Start(viper.GetString("server.address"))
 	if err != nil {
