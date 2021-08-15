@@ -47,6 +47,7 @@ func (controller *TrainerController) Login(c echo.Context) error {
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
+
 	return controllers.NewSuccessResponse(c, trainer)
 }
 

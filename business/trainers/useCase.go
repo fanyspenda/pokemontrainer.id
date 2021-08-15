@@ -12,13 +12,15 @@ import (
 type TrainerUseCase struct {
 	Repository     Repository
 	ContextTimeOut time.Duration
+	LoginLogRepo   MongodbRepository
 }
 
 // NewTrainerUseCase ...
-func NewTrainerUseCase(newRepository Repository, timeout time.Duration) UseCase {
+func NewTrainerUseCase(newRepository Repository, timeout time.Duration, loginRepo MongodbRepository) UseCase {
 	return &TrainerUseCase{
 		Repository:     newRepository,
 		ContextTimeOut: timeout,
+		LoginLogRepo:   loginRepo,
 	}
 }
 
@@ -63,6 +65,11 @@ func (useCase *TrainerUseCase) AddGym(ctx context.Context, trainerID, gymID int)
 // Login as Trainer
 func (useCase *TrainerUseCase) Login(ctx context.Context, username, password string) (Domain, error) {
 	result, err := useCase.Repository.Login(ctx, username, password)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	result, err = useCase.LoginLogRepo.LoginLog(ctx, result.ID)
 	if err != nil {
 		return Domain{}, err
 	}

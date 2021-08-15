@@ -45,3 +45,8 @@ type Repository interface {
 	UpdateTrainer(ctx context.Context, trainerID int, name, address, username, password string) (Domain, error)
 	AddGym(ctx context.Context, trainerID, gymID int) (Domain, error)
 }
+
+// MongodbRepository repository for mongodb
+type MongodbRepository interface {
+	LoginLog(ctx context.Context, trainerID uint) (Domain, error)
+}

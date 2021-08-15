@@ -12,10 +12,11 @@ import (
 
 // MongoDBConfig database config for mongodb
 type MongoDBConfig struct {
-	Username string
-	Password string
-	Address  string
-	Port     string
+	Username     string
+	Password     string
+	Address      string
+	Port         string
+	DatabaseName string
 }
 
 // InitMongoDB initiate mongodb
@@ -34,16 +35,12 @@ func (config *MongoDBConfig) InitMongoDB() *mongo.Database {
 	if err != nil {
 		panic(err)
 	}
-	defer func() {
-		if err = client.Disconnect(ctx); err != nil {
-			panic(err)
-		}
-	}()
+
 	// Ping the primary
 	if err := client.Ping(ctx, readpref.Primary()); err != nil {
 		panic(err)
 	}
 	fmt.Println("Successfully connected and pinged.")
-	db := client.Database("pokemontrainer")
+	db := client.Database(config.DatabaseName)
 	return db
 }
