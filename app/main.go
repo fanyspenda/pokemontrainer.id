@@ -46,9 +46,12 @@ func main() {
 		Loc:       viper.GetString("database.loc"),
 		ParseTime: viper.GetString("database.parseTime"),
 	}
+	configMongoDB := _dbHelper.MongoDBConfig{}
+
 	db := configDB.InitDB()
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 	e := echo.New()
+	_dbHelper.InitMongoDB()
 
 	trainerRepo := _trainerRepo.NewMysqlTrainerRepository(db)
 	trainerUseCase := _trainerUseCase.NewTrainerUseCase(trainerRepo, timeoutContext)

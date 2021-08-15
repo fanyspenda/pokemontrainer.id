@@ -18,6 +18,13 @@
 		"loc": "Local",
 		"parseTime": "True"
 	},
+	"database_mongo": {
+		"host": "localhost",
+		"port": "3306",
+		"user": "alkanahalida",
+		"pass": "123456",
+		"name": "pokemontrainer"
+	},
 	"jwt": {
 		"secret": "supersecret12345!@#$%",
 		"expired": 1
