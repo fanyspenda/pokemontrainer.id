@@ -15,6 +15,7 @@ type Domain struct {
 	Address   string
 	Username  string
 	Password  string
+	Token     string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt

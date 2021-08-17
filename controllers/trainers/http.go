@@ -9,7 +9,10 @@ import (
 	pokeballResponses "pokemontrainer/controllers/pokeballs/responses"
 	"pokemontrainer/controllers/trainers/requests"
 	"pokemontrainer/controllers/trainers/responses"
+	"pokemontrainer/helpers/middlewares"
 	"strconv"
+
+	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/labstack/echo/v4"
 )
@@ -28,7 +31,7 @@ func NewTrainerController(e *echo.Echo, trainerUC trainers.UseCase) {
 	trainers := e.Group("trainers")
 	trainers.POST("/login", controller.Login)
 	trainers.POST("/register", controller.Register)
-	trainers.GET("/", controller.GetTrainers)
+	trainers.GET("/", controller.GetTrainers, middleware.JWT(middlewares.KeyToByte()))
 	trainers.GET("", controller.GetTrainers)
 	trainers.POST("/catch", controller.CatchPokemon)
 	trainers.PUT("/:id", controller.TrainerUpdate)

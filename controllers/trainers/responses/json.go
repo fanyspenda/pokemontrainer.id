@@ -15,6 +15,7 @@ type TrainerResponse struct {
 	Name      string         `json:"name"`
 	Address   string         `json:"address"`
 	Username  string         `json:"username"`
+	Token     string         `json:"token"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
@@ -35,6 +36,7 @@ func FromDomain(domain trainers.Domain) TrainerResponse {
 		Name:      domain.Name,
 		Address:   domain.Address,
 		Username:  domain.Username,
+		Token:     domain.Token,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 		DeletedAt: domain.DeletedAt,

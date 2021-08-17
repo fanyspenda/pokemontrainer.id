@@ -3,6 +3,7 @@ package trainers
 import (
 	"context"
 	"pokemontrainer/business/pokeballs"
+	"pokemontrainer/helpers/middlewares"
 	"time"
 )
 
@@ -73,6 +74,13 @@ func (useCase *TrainerUseCase) Login(ctx context.Context, username, password str
 	if err != nil {
 		return Domain{}, err
 	}
+
+	result.Token, err = middlewares.GenerateTokenJWT(result.ID)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
 	return result, nil
 }
 
