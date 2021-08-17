@@ -18,6 +18,13 @@
 		"loc": "local",
 		"parseTime": true
 	},
+	"database_mongo": {
+		"host": "host for mongodb",
+		"port": "port for mongodb",
+		"user": "username for mongodb",
+		"pass": "password for mongodb",
+		"name": "name of database in mongodb"
+	},
 	"jwt": {
 		"secret": "secretkey",
 		"expired": 1

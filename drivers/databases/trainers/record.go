@@ -7,6 +7,7 @@ import (
 	"pokemontrainer/drivers/databases/pokemons"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"gorm.io/gorm"
 )
 
@@ -25,6 +26,14 @@ type Trainer struct {
 	CreatedAt time.Time            `json:"created_at"`
 	UpdatedAt time.Time            `json:"updated_at"`
 	DeletedAt gorm.DeletedAt       `gorm:"index" json:"deleted_at"`
+}
+
+// TrainerLogin data structure
+type TrainerLogin struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty"`
+	TrainerID uint               `bson:"trainer_id,omitempty"`
+	Date      time.Time          `bson:"date,omitempty"`
+	Tags      []string           `bson:"tags,omitempty"`
 }
 
 //TrainerPokemon relation table structure

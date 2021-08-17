@@ -3,6 +3,7 @@ package trainers
 import (
 	"context"
 	"pokemontrainer/business/pokeballs"
+	"pokemontrainer/helpers/middlewares"
 	"time"
 )
 
@@ -12,13 +13,15 @@ import (
 type TrainerUseCase struct {
 	Repository     Repository
 	ContextTimeOut time.Duration
+	LoginLogRepo   MongodbRepository
 }
 
 // NewTrainerUseCase ...
-func NewTrainerUseCase(newRepository Repository, timeout time.Duration) UseCase {
+func NewTrainerUseCase(newRepository Repository, timeout time.Duration, loginRepo MongodbRepository) UseCase {
 	return &TrainerUseCase{
 		Repository:     newRepository,
 		ContextTimeOut: timeout,
+		LoginLogRepo:   loginRepo,
 	}
 }
 
@@ -66,6 +69,18 @@ func (useCase *TrainerUseCase) Login(ctx context.Context, username, password str
 	if err != nil {
 		return Domain{}, err
 	}
+
+	result, err = useCase.LoginLogRepo.LoginLog(ctx, result.ID)
+	if err != nil {
+		return Domain{}, err
+	}
+
+	result.Token, err = middlewares.GenerateTokenJWT(result.ID)
+
+	if err != nil {
+		return Domain{}, err
+	}
+
 	return result, nil
 }
 

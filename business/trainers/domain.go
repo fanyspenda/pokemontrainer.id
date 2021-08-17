@@ -15,6 +15,7 @@ type Domain struct {
 	Address   string
 	Username  string
 	Password  string
+	Token     string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt
@@ -44,4 +45,9 @@ type Repository interface {
 	CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error)
 	UpdateTrainer(ctx context.Context, trainerID int, name, address, username, password string) (Domain, error)
 	AddGym(ctx context.Context, trainerID, gymID int) (Domain, error)
+}
+
+// MongodbRepository repository for mongodb
+type MongodbRepository interface {
+	LoginLog(ctx context.Context, trainerID uint) (Domain, error)
 }

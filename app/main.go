@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	_dbHelper "pokemontrainer/helpers/databases"
 	"time"
 
@@ -46,12 +47,23 @@ func main() {
 		Loc:       viper.GetString("database.loc"),
 		ParseTime: viper.GetString("database.parseTime"),
 	}
+	configMongoDB := _dbHelper.MongoDBConfig{
+		Username:     viper.GetString("database_mongo.user"),
+		Password:     viper.GetString("database_mongo.pass"),
+		Address:      viper.GetString("database_mongo.host"),
+		Port:         viper.GetString("database_mongo.port"),
+		DatabaseName: viper.GetString("database_mongo.name"),
+	}
+
 	db := configDB.InitDB()
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 	e := echo.New()
+	mongoDB := configMongoDB.InitMongoDB()
+	fmt.Println(mongoDB)
 
 	trainerRepo := _trainerRepo.NewMysqlTrainerRepository(db)
-	trainerUseCase := _trainerUseCase.NewTrainerUseCase(trainerRepo, timeoutContext)
+	trainerMongoRepo := _trainerRepo.NewMongodbTrainerRepository(mongoDB)
+	trainerUseCase := _trainerUseCase.NewTrainerUseCase(trainerRepo, timeoutContext, trainerMongoRepo)
 	_trainerController.NewTrainerController(e, trainerUseCase)
 
 	gymRepo := _gymRepo.NewMysqlGymRepository(db)
