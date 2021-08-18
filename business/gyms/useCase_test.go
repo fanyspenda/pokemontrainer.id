@@ -77,7 +77,7 @@ func TestUpdateGym(t *testing.T) {
 	t.Run("test 3: invalid ID", func(t *testing.T) {
 		gymRepository.On("UpdateGym",
 			mock.Anything, mock.AnythingOfType("int"), mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(gyms.Domain{}, gyms.ErrInvalidInput).Once()
-		result, err := gymUseCase.UpdateGym(context.Background(), 2, "", "")
+		result, err := gymUseCase.UpdateGym(context.Background(), -1, "aaa", "bbbb")
 
 		assert.Equal(t, err, gyms.ErrInvalidID)
 		assert.Equal(t, gyms.Domain{}, result)

@@ -27,6 +27,12 @@ func NewTrainerUseCase(newRepository Repository, timeout time.Duration, loginRep
 
 // Register as Trainer
 func (useCase *TrainerUseCase) Register(ctx context.Context, name, address, username, password string) (Domain, error) {
+	if name == "" ||
+		address == "" ||
+		username == "" ||
+		password == "" {
+		return Domain{}, ErrInvalidInput
+	}
 	result, err := useCase.Repository.Register(ctx, name, address, username, password)
 
 	if err != nil {
@@ -37,6 +43,9 @@ func (useCase *TrainerUseCase) Register(ctx context.Context, name, address, user
 
 // GetFirstBall add trainer data to join table trainer-pokeball
 func (useCase *TrainerUseCase) GetFirstBall(ctx context.Context, trainerID uint) (pokeballs.Domain, error) {
+	if trainerID <= 0 {
+		return pokeballs.Domain{}, ErrInvalidInput
+	}
 	result, err := useCase.Repository.GetFirstBall(ctx, trainerID)
 	if err != nil {
 		return pokeballs.Domain{}, err
@@ -56,6 +65,10 @@ func (useCase *TrainerUseCase) GetTrainers(ctx context.Context) ([]Domain, error
 
 // AddGym register trainer to gym
 func (useCase *TrainerUseCase) AddGym(ctx context.Context, trainerID, gymID int) (Domain, error) {
+	if trainerID <= 0 || gymID <= 0 {
+		return Domain{}, ErrInvalidInput
+	}
+
 	result, err := useCase.Repository.AddGym(ctx, trainerID, gymID)
 	if err != nil {
 		return Domain{}, err
@@ -65,6 +78,9 @@ func (useCase *TrainerUseCase) AddGym(ctx context.Context, trainerID, gymID int)
 
 // Login as Trainer
 func (useCase *TrainerUseCase) Login(ctx context.Context, username, password string) (Domain, error) {
+	if username == "" || password == "" {
+		return Domain{}, ErrInvalidInput
+	}
 	result, err := useCase.Repository.Login(ctx, username, password)
 	if err != nil {
 		return Domain{}, err
@@ -72,13 +88,13 @@ func (useCase *TrainerUseCase) Login(ctx context.Context, username, password str
 
 	result, err = useCase.LoginLogRepo.LoginLog(ctx, result.ID)
 	if err != nil {
-		return Domain{}, err
+		return Domain{}, ErrAddLog
 	}
 
 	result.Token, err = middlewares.GenerateTokenJWT(result.ID)
 
 	if err != nil {
-		return Domain{}, err
+		return Domain{}, ErrGenerateToken
 	}
 
 	return result, nil
@@ -86,6 +102,9 @@ func (useCase *TrainerUseCase) Login(ctx context.Context, username, password str
 
 // CatchPokemon catch pokemon as Trainer
 func (useCase *TrainerUseCase) CatchPokemon(ctx context.Context, ID, pokemonID int) (Domain, error) {
+	if pokemonID <= 0 {
+		return Domain{}, ErrInvalidInput
+	}
 	result, err := useCase.Repository.CatchPokemon(ctx, ID, pokemonID)
 	if err != nil {
 		return Domain{}, err
@@ -95,6 +114,13 @@ func (useCase *TrainerUseCase) CatchPokemon(ctx context.Context, ID, pokemonID i
 
 // UpdateTrainer update trainer's profile
 func (useCase *TrainerUseCase) UpdateTrainer(ctx context.Context, trainerID int, name, address, username, password string) (Domain, error) {
+	if trainerID <= 0 {
+		return Domain{}, ErrInvalidID
+	}
+
+	if name == "" || address == "" || username == "" || password == "" {
+		return Domain{}, ErrInvalidInput
+	}
 	result, err := useCase.Repository.UpdateTrainer(ctx, trainerID, name, address, username, password)
 	if err != nil {
 		return Domain{}, err
