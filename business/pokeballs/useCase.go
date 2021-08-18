@@ -21,6 +21,9 @@ func NewPokeballUseCase(newRepositories Repositories, newTimeout time.Duration) 
 
 // AddPokeball add pokeball usecase
 func (useCase *PokeballUseCase) AddPokeball(ctx context.Context, name string, successRate float32) (Domain, error) {
+	if successRate < 0 {
+		return Domain{}, ErrInvalidRate
+	}
 	domain, err := useCase.Repositories.AddPokeball(ctx, name, successRate)
 	if err != nil {
 		return Domain{}, err
