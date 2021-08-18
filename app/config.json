@@ -1,0 +1,52 @@
+{
+	"debug": true,
+	"server": {
+		"address": ":5001"
+	},
+	"context": {
+		"timeout": 2
+	},
+	"database": {
+		"host": "localhost",
+		"port": "3306",
+		"user": "alkanahalida",
+		"pass": "123456",
+		"name": "pokemontrainer",
+		"params": {
+			"charset": "utf8mb4"
+		},
+		"loc": "Local",
+		"parseTime": true
+	},
+	"database_mongo": {
+		"host": "localhost",
+		"port": "27017",
+		"user": "alkanahalida",
+		"pass": "123456",
+		"name": "pokemontrainer"
+	},
+	"jwt": {
+		"secret": "secretkey",
+		"expired": 1
+	},
+
+	"__comment": {
+		"server": {
+			"address": "your server address"
+		},
+		"context": {
+			"timeout": "timeout for maximum pending request. time is in second"
+		},
+		"database": {
+			"host": "your host url",
+			"port": "your databases port",
+			"user": "your database username",
+			"pass": "password for your database",
+			"name": "your database name"
+		},
+		"jwt": {
+			"secret": "secret for JWT",
+			"expired": "your JWT expired time."
+		}
+	}
+}

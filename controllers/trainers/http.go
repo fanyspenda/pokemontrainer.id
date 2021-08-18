@@ -99,7 +99,9 @@ func (controller *TrainerController) CatchPokemon(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
+	token := c.Request().Header.Get("Authorization")
 	fmt.Println("catchData", catchData)
+	fmt.Println("token", token)
 	trainer, err := controller.TrainerUseCase.CatchPokemon(c.Request().Context(), catchData.TrainerID, catchData.PokemonID)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
