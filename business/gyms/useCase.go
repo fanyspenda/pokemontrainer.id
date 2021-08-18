@@ -21,16 +21,26 @@ func NewGymUseCases(newRepository Repositories, timeout time.Duration) UseCases 
 
 // AddGym Case for add new Gym
 func (useCase *GymUseCase) AddGym(ctx context.Context, name, address string) (Domain, error) {
+	if name == "" || address == "" {
+		return Domain{}, ErrInvalidInput
+	}
 	gym, err := useCase.Repositories.AddGym(ctx, name, address)
 
 	if err != nil {
-		return Domain{}, err
+		return Domain{}, ErrAddNewGym
 	}
 	return gym, nil
 }
 
 // UpdateGym update Gym UseCase to run Repository
 func (useCase *GymUseCase) UpdateGym(ctx context.Context, gymID int, name, address string) (Domain, error) {
+	if name == "" || address == "" {
+		return Domain{}, ErrInvalidInput
+	}
+	if gymID <= 0 {
+		return Domain{}, ErrInvalidID
+	}
+
 	gym, err := useCase.Repositories.UpdateGym(ctx, gymID, name, address)
 
 	if err != nil {
