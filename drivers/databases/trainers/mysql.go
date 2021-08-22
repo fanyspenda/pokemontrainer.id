@@ -49,7 +49,7 @@ func (repo *MysqlTrainerRepository) GetFirstBall(ctx context.Context, trainerID 
 	var joinTableData = TrainerPokeballs{
 		TrainerID:  trainerID,
 		PokeballID: lowestPokeball.ID,
-		Quantity:   1,
+		Quantity:   100,
 	}
 
 	result = repo.Conn.Create(&joinTableData)
@@ -88,8 +88,14 @@ func (repo *MysqlTrainerRepository) CatchPokemon(ctx context.Context, ID, pokemo
 		TrainerID: ID,
 	}
 
-	repo.Conn.Create(&pokemonData)
-	repo.Conn.Create(&trainerPokemon)
+	createErr := repo.Conn.Create(&pokemonData)
+	if createErr.Error != nil {
+		return trainers.Domain{}, createErr.Error
+	}
+	createErr = repo.Conn.Create(&trainerPokemon)
+	if createErr != nil {
+		return trainers.Domain{}, createErr.Error
+	}
 	return trainers.Domain{}, nil
 }
 

@@ -32,10 +32,10 @@ func NewTrainerController(e *echo.Echo, trainerUC trainers.UseCase) {
 	trainers.POST("/login", controller.Login)
 	trainers.POST("/register", controller.Register)
 	trainers.GET("/", controller.GetTrainers, middleware.JWT(middlewares.KeyToByte()))
-	trainers.GET("", controller.GetTrainers)
-	trainers.POST("/catch", controller.CatchPokemon)
-	trainers.PUT("/:id", controller.TrainerUpdate)
-	trainers.POST("/gyms/register", controller.TrainerRegisterGym)
+	trainers.GET("", controller.GetTrainers, middleware.JWT(middlewares.KeyToByte()))
+	trainers.POST("/catch", controller.CatchPokemon, middleware.JWT(middlewares.KeyToByte()))
+	trainers.PUT("/:id", controller.TrainerUpdate, middleware.JWT(middlewares.KeyToByte()))
+	trainers.POST("/gyms/register", controller.TrainerRegisterGym, middleware.JWT(middlewares.KeyToByte()))
 }
 
 // Login controller for login useCase

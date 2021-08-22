@@ -6,8 +6,10 @@ import (
 	"pokemontrainer/controllers"
 	"pokemontrainer/controllers/pokeballs/requests"
 	"pokemontrainer/controllers/pokeballs/responses"
+	"pokemontrainer/helpers/middlewares"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // ControllerPokeball make NewController
@@ -22,7 +24,7 @@ func NewControllerPokeball(e *echo.Echo, pokeballUC pokeballs.UseCases) {
 	}
 
 	pokeballs := e.Group("/pokeballs")
-	pokeballs.POST("", controller.AddPokeball)
+	pokeballs.POST("", controller.AddPokeball, middleware.JWT(middlewares.KeyToByte()))
 }
 
 // AddPokeball add pokeball controller

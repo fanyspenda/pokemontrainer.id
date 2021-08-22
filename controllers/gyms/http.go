@@ -6,9 +6,11 @@ import (
 	"pokemontrainer/controllers"
 	"pokemontrainer/controllers/gyms/requests"
 	"pokemontrainer/controllers/gyms/responses"
+	"pokemontrainer/helpers/middlewares"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // GymController ...
@@ -23,9 +25,9 @@ func NewGymController(e *echo.Echo, gymUC gyms.UseCases) {
 	}
 
 	gyms := e.Group("gyms")
-	gyms.POST("", controller.AddGym)
-	gyms.PUT("/:id", controller.UpdateGym)
-	gyms.GET("", controller.GetGyms)
+	gyms.POST("", controller.AddGym, middleware.JWT(middlewares.KeyToByte()))
+	gyms.PUT("/:id", controller.UpdateGym, middleware.JWT(middlewares.KeyToByte()))
+	gyms.GET("", controller.GetGyms, middleware.JWT(middlewares.KeyToByte()))
 }
 
 // AddGym controller for AddGym useCase
